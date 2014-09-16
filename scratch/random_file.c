@@ -1,5 +1,5 @@
 /**
- * CS3600, Spring 2013
+ * S3600, Spring 2013
  * Project 1 Starter Code
  * (c) 2013 Alan Mislove
  *
@@ -19,10 +19,19 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
   
+  signal(SIGINT, interrupt_handler);
+  
+  // for printing out parts of the prompt
+  char hostname[128];
+  char dirbuf[128];
+  gethostname(hostname, sizeof(hostname));
+  getcwd(dirbuf, 128);
+  
   // Main loop that reads a command and executes it
   while (1) {         
     // You should issue the prompt here
-      
+    // Format - [username]@[host]:[full dir path]>[space]
+    printf("%s@%s:%s> ", getlogin(), hostname, dirbuf);
     // You should read in the command and execute it here
     
     // You should probably remove this; right now, it
@@ -33,19 +42,29 @@ int main(int argc, char*argv[]) {
   return 0;
 }
 
-/*
- * This function takes a pointer to a string and returns
- * the same pointer with excess spaces removed from the
- * string. Excess spaces being any back to back spaces,
- * as well as leading and trailing spaces.
- * EX:
- *   "a  a" -> "a a"
- *   " abc" -> "abc"
- *   "abc " -> "abc"
- *   "wow this  is   so    cool" -> "wow this is so cool"
- */
-void trimstr(char* str) {
-  str = str;
+void interrupt_handler(int signum) {
+    pid_t childpid;
+    if (!(childpid == 0) {
+        printf("  The process has been stopped\n");
+        kill(childpid, SIGINT);
+    }
+}
+
+static void execute(int argc, char* argv[]) {
+    pid_t childpid;
+    
+    childpid = fork();
+    if (childpid == 0) {
+        
+        // will be needing to modify these error messages (and possibly conditions)
+        if (execvp(argv[0], argv) == -1) {
+            perror("execvp");
+            printf("     (couldn't find command)\n");
+        }
+        exit(1);
+    } else {
+        waitpid(childpid, NULL, 0);
+    return;
 }
 
 // Function which exits, printing the necessary message
@@ -57,3 +76,4 @@ void do_exit() {
   while (wait(NULL) > 0) {}
   exit(0);
 }
+

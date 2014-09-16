@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+void trimstr(char* str);
 void do_exit();
 
 #endif 
