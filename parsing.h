@@ -1,0 +1,1 @@
+void trimstr(char* str);

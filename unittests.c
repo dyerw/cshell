@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "minunit.h"
-#include "3600sh.h" 
+#include "parsing.h"
 
 int tests_run = 0;
 

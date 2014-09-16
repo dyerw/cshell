@@ -1,19 +1,19 @@
 TARGET = 3600sh
-CFILES = $(wildcard *.c)
 
 $(TARGET): $(TARGET).c
 	#gcc -std=c99 -O0 -g -lm -Wall -pedantic -Werror -Wextra -o $@ $<
-	gcc -std=c99 -O0 -g -lm -Wall -pedantic -Wextra -o $@ $<
+	gcc -std=c99 -O0 -g -lm -Wall -pedantic -Wextra -o $@ $< parsing.c
 
-%: %.c
-	gcc -g -std=c99 -O0 -o $@ $< -lm
 
-all: $(basename $(CFILES))
+all: $(TARGET) 
 
 test: all
 	./test
 
-utest: all
+unittests: unittests.c
+	gcc -std=c99 -g -lm -Wall -pedantic -Wextra unittests.c parsing.c -o unittests
+
+utest: unittests
 	./unittests
 
 clean:
