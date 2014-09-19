@@ -22,6 +22,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <ctype.h>
 
 void trimstr(char* str);
 void do_exit();
