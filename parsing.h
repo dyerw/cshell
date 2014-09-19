@@ -4,4 +4,6 @@
 #include <stdlib.h>
 
 void trimstr(char* str);
-char** separate_cmds(char* str, int* num_cmds);
+char** splitstr(char* str, const char* delim, int* count);
+
+

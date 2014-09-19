@@ -12,6 +12,10 @@ char* str_leading = "  cool beans";
 char* str_trailing = "cool beans  ";
 char* str_excess = "cool  beans";
 char* str_combo = "  cool      beans    ";
+
+///////////////////
+// TRIMSTR TESTS //
+///////////////////
 static char* test_trimstr() {
   // test a correctly formatted string
   char* input0 = (char*) calloc(strlen(str1), sizeof(char));
@@ -61,7 +65,10 @@ static char* test_trimstr() {
   return 0;
 }
 
-static char* test_separate_cmds() {
+///////////////////
+// SPLITSTR TEST //
+///////////////////
+static char* test_splitstr() {
   char* input = NULL;
   int* n = calloc(1, sizeof(n));
   char** result;
@@ -72,7 +79,7 @@ static char* test_separate_cmds() {
   input = calloc(strlen("ls -al"), sizeof(char));
   strcpy(input, "ls -al");
 
-  result = separate_cmds(input, n);
+  result = splitstr(input, ";", n);
 
   mu_assert("ERROR: cmd w/ no ; is not returned as the same string",
             strcmp(result[0], input) == 0);
@@ -88,7 +95,7 @@ static char* test_separate_cmds() {
   input = calloc(strlen("ls -al; cat foo.txt"), sizeof(char));
   strcpy(input, "ls -al; cat foo.txt");
 
-  result = separate_cmds(input, n);
+  result = splitstr(input, ";", n);
 
   mu_assert("ERROR: separate_cmds(\"ls -al; cat foot.txt\")[0]",
             strcmp(result[0], "ls -al") == 0);
@@ -106,7 +113,7 @@ static char* test_separate_cmds() {
   input = calloc(strlen("ls -al;"), sizeof(int));
   strcpy(input, "ls -al;");
 
-  result = separate_cmds(input, n);
+  result = splitstr(input, ";", n);
 
   mu_assert("ERROR: separate_cmds ls -al; != ls -al",
             (strcmp(result[0], "ls -al") == 0));
@@ -114,9 +121,10 @@ static char* test_separate_cmds() {
   return 0;
 }
 
+// Runs all our test functions
 static char* all_tests() {
   mu_run_test(test_trimstr);
-  mu_run_test(test_separate_cmds);
+  mu_run_test(test_splitstr);
   return 0;
 }
 
