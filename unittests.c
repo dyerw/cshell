@@ -6,22 +6,58 @@
 
 int tests_run = 0;
 
-// Example test
-int foo = 7;
-static char* test_foo() {
-  mu_assert("error, foo != 7", foo == 7);
-  return 0;
-}
-
+char* str_actual = "cool beans";
+char* str1 = "cool beans";
+char* str_leading = "  cool beans";
+char* str_trailing = "cool beans  ";
+char* str_excess = "cool  beans";
+char* str_combo = "  cool      beans    ";
 static char* test_trimstr() {
-  // Tests that a string with no spaces is not 
-  // modified
-  char* str1 = "cool";
-  char* str1cpy = "cool";
-  trimstr(str1);
-  mu_assert("ERROR: trimstr(\"cool\") != \"cool\"", 
-            strcmp(str1, str1cpy) == 0);
+  // test a correctly formatted string
+  char* input0 = (char*) calloc(strlen(str1), sizeof(char));
+  strcpy(input0, str1);
+  trimstr(input0);
+  mu_assert("ERROR: Leading white space exists",
+	    strcmp(str_actual, input0) == 0);
+  free(input0);
+  tests_run++; 
 
+  // test leading spaces
+  char* input1 = (char*) calloc(strlen(str_leading), sizeof(char));
+  strcpy(input1, str_leading);
+  trimstr(input1);
+  mu_assert("ERROR: Leading white space exists",
+	    strcmp(str_actual, input1) == 0);
+  free(input1);
+  tests_run++;
+  
+  // test excess internal spaces
+  char* input2 = (char*) calloc(strlen(str_excess), sizeof(char));
+  strcpy(input2, str_excess);
+  trimstr(input2);
+  mu_assert("ERROR: excess white space exists between words", 
+            strcmp(str_actual, input2) == 0);
+  free(input2);
+  tests_run++;
+ 
+  // test trailing spaces
+  char* input3 = (char*) calloc(strlen(str_trailing), sizeof(char));
+  strcpy(input3, str_trailing);
+  trimstr(input3);
+  mu_assert("ERROR: Trailing whitespace exists", 
+            strcmp(str_actual, input3) == 0);
+  free(input3);
+  tests_run++;
+  
+  // test a combination of extra spaces
+  char* input4 = (char*) calloc(strlen(str_combo), sizeof(char));
+  strcpy(input4, str_combo);
+  trimstr(input4);
+  mu_assert("ERROR: excess white space exists", 
+            strcmp(str_actual, input4) == 0);
+  free(input4);
+  tests_run++;
+  
   return 0;
 }
 
@@ -79,7 +115,6 @@ static char* test_separate_cmds() {
 }
 
 static char* all_tests() {
-  mu_run_test(test_foo);
   mu_run_test(test_trimstr);
   mu_run_test(test_separate_cmds);
   return 0;
