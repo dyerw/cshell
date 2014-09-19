@@ -13,6 +13,7 @@
 
 #define _BSD_SOURCE
 
+#include "parsing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,7 +25,6 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-void trimstr(char* str);
 void do_exit();
 
 #endif 
