@@ -53,25 +53,23 @@ void trimstr(char* str) {
   free(tmp);  // free the tmp var
 }
 
-/* 
- * This function takes a string and returns
- * an array of strings where each new string
- * is a substring and the substrings are divided
- * based on the occurence of ; in the original 
- * string, num_cmds lets the return function 
- * know the length of the returned array
+/*
+ * This function takes a string, a pointer to an int, and
+ * a char for a delimeter. It splits the given string into
+ * an array of strings based on the given delimiter and 
+ * changes the int to represent the number of strings in
+ * the new array.
  */
-char** separate_cmds(char* str, int* num_cmds) {
+char** splitstr(char* str, const char* delim, int* count) {
   char** result = NULL;  
-  *num_cmds = 0;
+  *count = 0;
   
   char* token;
-  const char delim[2] = ";";
   token = strtok(str, delim);
   
   // Iterates through the tokens delimited by ';'
   while(token != NULL) {
-    (*num_cmds)++;
+    (*count)++;
 
     // Make sure the token doesn't have a space before or after
     // if it does, delete them
@@ -85,10 +83,10 @@ char** separate_cmds(char* str, int* num_cmds) {
 
     // Store this token in the next available index in our 
     // result array
-    result = realloc(result, *num_cmds * sizeof(char*));
-    result[*num_cmds - 1] = calloc(strlen(token), sizeof(char));
+    result = realloc(result, *count * sizeof(char*));
+    result[*count - 1] = calloc(strlen(token), sizeof(char));
 
-    strcpy(result[*num_cmds - 1], token);
+    strcpy(result[*count - 1], token);
    
     // Move forward to the next token
     token = strtok(NULL, delim);
