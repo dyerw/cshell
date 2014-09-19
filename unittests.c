@@ -11,15 +11,32 @@ static char* test_foo() {
   return 0;
 }
 
+char* str_actual = "cool beans";
+char* str1 = "cool beans";
+char* str_leading = "  cool beans";
+char* str_trailing = "cool beans  ";
+char* str_excess = "cool  beans";
+char* str_combo = "  cool      beans    ";
 static char* test_trimstr() {
-  // Tests that a string with no spaces is not 
-  // modified
-  char* str1 = "cool";
-  char* str1cpy = "cool";
-  trimstr(str1);
-  mu_assert("ERROR: trimstr(\"cool\") != \"cool\"", 
-            strcmp(str1, str1cpy) == 0);
-
+  //trimstr2(str1);  // Tests a correctly-formatted string
+  trimstr(str_leading);  // Trims a string with leading whtie space
+  trimstr(str_trailing); // Trims a string with trailing white space
+  //trimstr2(str_excess);   // Trims a string with excess middle white space
+  //trimstr2(str_combo);    // Trims a string with a mix of all three
+  //mu_assert("ERROR: the string was modified from its correct form", 
+  //          strcmp(str_actual, str1) == 0);
+  mu_assert("ERROR: Leading white space exists",
+	    strcmp(str_actual, str_leading) == 0);
+  printf("Test Leading: %sEND\n", str_leading);
+  mu_assert("ERROR: trailing white space exists", 
+            strcmp(str_actual, str_trailing) == 0);
+  printf("Test Trailing: %sEND\n", str_trailing);
+  //mu_assert("ERROR: excess white space exists between words", 
+  //          strcmp(str_actual, str_excess) == 0);
+  //printf("Test Excess: %sEND\n", str_excess);
+  //mu_assert("ERROR: the combo string was not trimmed", 
+  //          strcmp(str_actual, str_combo) == 0);
+  
   return 0;
 }
 
