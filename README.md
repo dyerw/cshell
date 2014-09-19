@@ -6,7 +6,10 @@ a shell, written for cs3600
 
 TODO
 ====
+* parse args
 
-* trimstr (Adam)
-* Parsing
-** break input lines on sem-colons into an array (Liam) 
+DONE
+====
+* trimstr(Adam)
+* Parsing(Liam)
+** break input lines on semi-colons into an array 
