@@ -1,15 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "minunit.h"
 #include "parsing.h"
 
 int tests_run = 0;
-
-// Example test
-int foo = 7;
-static char* test_foo() {
-  mu_assert("error, foo != 7", foo == 7);
-  return 0;
-}
 
 char* str_actual = "cool beans";
 char* str1 = "cool beans";
@@ -18,30 +12,60 @@ char* str_trailing = "cool beans  ";
 char* str_excess = "cool  beans";
 char* str_combo = "  cool      beans    ";
 static char* test_trimstr() {
-  //trimstr2(str1);  // Tests a correctly-formatted string
-  trimstr(str_leading);  // Trims a string with leading whtie space
-  trimstr(str_trailing); // Trims a string with trailing white space
-  //trimstr2(str_excess);   // Trims a string with excess middle white space
-  //trimstr2(str_combo);    // Trims a string with a mix of all three
-  //mu_assert("ERROR: the string was modified from its correct form", 
-  //          strcmp(str_actual, str1) == 0);
+  // test a correctly formatted string
+  char* input0 = (char*) calloc(strlen(str1), sizeof(char));
+  strcpy(input0, str1);
+  trimstr(input0);
   mu_assert("ERROR: Leading white space exists",
-	    strcmp(str_actual, str_leading) == 0);
-  printf("Test Leading: %sEND\n", str_leading);
-  mu_assert("ERROR: trailing white space exists", 
-            strcmp(str_actual, str_trailing) == 0);
-  printf("Test Trailing: %sEND\n", str_trailing);
-  //mu_assert("ERROR: excess white space exists between words", 
-  //          strcmp(str_actual, str_excess) == 0);
-  //printf("Test Excess: %sEND\n", str_excess);
-  //mu_assert("ERROR: the combo string was not trimmed", 
-  //          strcmp(str_actual, str_combo) == 0);
+	    strcmp(str_actual, input0) == 0);
+  printf("Test Normal: %sEND\n", input0);
+  free(input0);
+  tests_run++; 
+
+  // test leading spaces
+  char* input1 = (char*) calloc(strlen(str_leading), sizeof(char));
+  strcpy(input1, str_leading);
+  trimstr(input1);
+  mu_assert("ERROR: Leading white space exists",
+	    strcmp(str_actual, input1) == 0);
+  printf("Test Leading: %sEND\n", input1);
+  free(input1);
+  tests_run++;
+  
+  // test excess internal spaces
+  char* input2 = (char*) calloc(strlen(str_excess), sizeof(char));
+  strcpy(input2, str_excess);
+  trimstr(input2);
+  mu_assert("ERROR: excess white space exists between words", 
+            strcmp(str_actual, input2) == 0);
+  printf("Test Excess: %sEND\n", input2);
+  free(input2);
+  tests_run++;
+ 
+  // test trailing spaces
+  char* input3 = (char*) calloc(strlen(str_trailing), sizeof(char));
+  strcpy(input3, str_trailing);
+  trimstr(input3);
+  mu_assert("ERROR: Trailing whitespace exists", 
+            strcmp(str_actual, input3) == 0);
+  printf("Test Trailing: %sEND\n", input3);
+  free(input3);
+  tests_run++;
+  
+  // test a combination of extra spaces
+  char* input4 = (char*) calloc(strlen(str_combo), sizeof(char));
+  strcpy(input4, str_combo);
+  trimstr(input4);
+  mu_assert("ERROR: excess white space exists", 
+            strcmp(str_actual, input4) == 0);
+  printf("Test Combo: %sEND\n", input4);
+  free(input4);
+  tests_run++;
   
   return 0;
 }
 
 static char* all_tests() {
-  mu_run_test(test_foo);
   mu_run_test(test_trimstr);
   return 0;
 }
