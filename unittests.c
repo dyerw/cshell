@@ -18,7 +18,6 @@ static char* test_trimstr() {
   trimstr(input0);
   mu_assert("ERROR: Leading white space exists",
 	    strcmp(str_actual, input0) == 0);
-  printf("Test Normal: %sEND\n", input0);
   free(input0);
   tests_run++; 
 
@@ -28,7 +27,6 @@ static char* test_trimstr() {
   trimstr(input1);
   mu_assert("ERROR: Leading white space exists",
 	    strcmp(str_actual, input1) == 0);
-  printf("Test Leading: %sEND\n", input1);
   free(input1);
   tests_run++;
   
@@ -38,7 +36,6 @@ static char* test_trimstr() {
   trimstr(input2);
   mu_assert("ERROR: excess white space exists between words", 
             strcmp(str_actual, input2) == 0);
-  printf("Test Excess: %sEND\n", input2);
   free(input2);
   tests_run++;
  
@@ -48,7 +45,6 @@ static char* test_trimstr() {
   trimstr(input3);
   mu_assert("ERROR: Trailing whitespace exists", 
             strcmp(str_actual, input3) == 0);
-  printf("Test Trailing: %sEND\n", input3);
   free(input3);
   tests_run++;
   
@@ -58,7 +54,6 @@ static char* test_trimstr() {
   trimstr(input4);
   mu_assert("ERROR: excess white space exists", 
             strcmp(str_actual, input4) == 0);
-  printf("Test Combo: %sEND\n", input4);
   free(input4);
   tests_run++;
   
