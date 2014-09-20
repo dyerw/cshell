@@ -8,7 +8,9 @@ $(TARGET): $(TARGET).c
 all: $(TARGET) 
 
 test: all
+	cp bin/3600sh ./3600sh
 	./test
+	rm ./3600sh
 
 unittests: unittests.c
 	gcc -std=c99 -g -lm -Wall -pedantic -Wextra unittests.c parsing.c -o ./bin/unittests

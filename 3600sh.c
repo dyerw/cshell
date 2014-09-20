@@ -10,6 +10,7 @@
 
 #include "3600sh.h"
 #include "parsing.h"
+#include <pwd.h>
 
 #define USE(x) (x) = (x)
 
@@ -32,7 +33,7 @@ int main(int argc, char*argv[]) {
   while (1) {         
     // You should issue the prompt here
     // Prints in form of:   [username]@[host]:[directory, full path]>[space] 
-    printf("%s@%s:%s> ", getlogin(), hostname, dirbuf);
+    printf("%s@%s:%s> ", getpwuid(getuid())->pw_name, hostname, dirbuf);
 
     // You should read in the command and execute it here
     char* input = calloc(200, sizeof(char));
@@ -52,7 +53,7 @@ int main(int argc, char*argv[]) {
       int* nargc = calloc(1, sizeof(int));
       nargv = splitstr(result[i], " ", nargc);
 
-      execute(*argc, argv);
+      execute(*nargc, nargv);
     }
   }
 
@@ -75,37 +76,31 @@ void do_exit() {
  * process into the command to be executed, waits for
  * it to finish and then returns.
  */
-/*
 void execute(int argc, char* argv[]) {
   
-	// If the given command is exit, then exit
-	if (strcmp(argv[0], "exit")) {
-     do_exit();
+  // If the given command is exit, then exit
+  if (strcmp(argv[0], "exit") == 0) { do_exit(); }
 
-	// Otherwise, execute the code
+  pid_t childpid;
+  childpid = fork();
+
+  // If we're in the child
+  if (childpid == 0) {
+
+    // If the command isn't recognized
+    if (execvp(argv[0], argv) == -1) {
+      perror("execvp: Couldn't find the specified command\n");
+      exit(1);
+    }
+
+  // If we're the parent
   } else {
-    pid_t childpid;
-    childpid = fork();
-
-		// If we're in the child
-		if (childpid == 0) {
-
-			// If the command isn't recognized
-			if (execvp(argv[0], argv) == -1) {
-				perror("execvp: Couldn't find the specified command\n");
-			}
-			exit(1);
-
-			// Handle & here?
-
-		// If we're the parent
-   	} else {
-			waitpid(childpid, NULL, 0);
-		}
-		return;
+    //TODO: handle &
+    waitpid(childpid, NULL, 0);
   }
+  return;
 }
-*/
+
 /*
  * 
 

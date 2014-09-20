@@ -26,5 +26,6 @@
 #include <ctype.h>
 
 void do_exit();
+void execute(int argc, char* argv[]);
 
 #endif 
