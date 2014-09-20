@@ -30,7 +30,7 @@ int main(int argc, char*argv[]) {
   getcwd(dirbuf, 128); // non-arbitrary num needed
   
   // Main loop that reads a command and executes it
-  while (1) {         
+  while (!feof(stdin)) {         
     // You should issue the prompt here
     // Prints in form of:   [username]@[host]:[directory, full path]>[space] 
     printf("%s@%s:%s> ", getpwuid(getuid())->pw_name, hostname, dirbuf);
