@@ -20,9 +20,11 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
+	signal(SIGINT, interrupt_handler);
+
   // Adam: Code for getting the necessary prompt sections
-  char hostname[128] // Need to choose a non-arbitrary number
-  char dirbuf[128]   // same thing
+  char hostname[128]; // Need to choose a non-arbitrary number
+  char dirbuf[PATH_MAX];   // same thing
   gethostname(hostname, sizeof(hostname));
   getcwd(dirbuf, 128); // non-arbitrary num needed
   

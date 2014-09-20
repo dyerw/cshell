@@ -56,6 +56,12 @@ void trimstr(char* str) {
  * an array of strings based on the given delimiter and 
  * changes the int to represent the number of strings in
  * the new array.
+ *
+ * Note that the given delim can have multiple delims. 
+ * Each char supplied is a delim.
+ * For example, given " \n\t", 
+ * 		this function will split "this is\ta\n sentence" into:
+ * 		"this" "is" "a" "sentence".
  */
 char** splitstr(char* str, const char* delim, int* count) {
   char** result = NULL;  
