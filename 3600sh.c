@@ -20,7 +20,7 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
-	signal(SIGINT, interrupt_handler);
+	//signal(SIGINT, interrupt_handler);
 
   // Adam: Code for getting the necessary prompt sections
   char hostname[128]; // Need to choose a non-arbitrary number
@@ -35,13 +35,25 @@ int main(int argc, char*argv[]) {
     printf("%s@%s:%s> ", getlogin(), hostname, dirbuf);
 
     // You should read in the command and execute it here
-    //TODO: something to read in input
+    char* input = calloc(200, sizeof(char));
+    fgets(input, 200, stdin); 
     
-    //TODO: execute
+    // Trim the spaces
+    trimstr(input);
     
-    // You should probably remove this; right now, it
-    // just exits
-    do_exit();
+    // Break out every command into an array
+    char** result = NULL;
+    int* size = calloc(1, sizeof(int));
+    result = splitstr(input, ";", size);
+
+    for (int i = 0; i < *size; i++) {
+      // For each command, split it into arguments
+      char** nargv = NULL;
+      int* nargc = calloc(1, sizeof(int));
+      nargv = splitstr(result[i], " ", nargc);
+
+      execute(*argc, argv);
+    }
   }
 
   return 0;
@@ -57,7 +69,13 @@ void do_exit() {
   exit(0);
 }
 
-/* Currently just some pseudo-code */
+/*
+ * execute takes a count of args and an array of strings
+ * for the args. It forks itself, then transforms the child
+ * process into the command to be executed, waits for
+ * it to finish and then returns.
+ */
+/*
 void execute(int argc, char* argv[]) {
   
 	// If the given command is exit, then exit
@@ -87,10 +105,10 @@ void execute(int argc, char* argv[]) {
 		return;
   }
 }
-
+*/
 /*
  * 
- */
+
 void interrupt_handler(int signum) {
     pid_t childpid;
     if (!(childpid == 0)) {
@@ -98,3 +116,4 @@ void interrupt_handler(int signum) {
         kill(childpid, SIGINT);
     }
 }
+*/
