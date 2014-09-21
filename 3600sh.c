@@ -98,9 +98,10 @@ void execute(int argc, char* argv[]) {
 
       // Delete these elements from the arguments array
       remove_index(argv, i, argc);
-      remove_index(argv, i + 1, argc);
+      argc--;
+      remove_index(argv, i, argc);
+      argc--;
       i = 0;
-      argc = argc - 2;
     }
     
     // Check for output redirection
@@ -118,9 +119,10 @@ void execute(int argc, char* argv[]) {
       dup2(stream, fileno(fd));
 
       remove_index(argv, i, argc);
-      remove_index(argv, i + 1, argc); 
+      argc--;
+      remove_index(argv, i, argc);
+      argc--; 
       i = 0;
-      argc = argc - 2;
     }
   }
   pid_t childpid;

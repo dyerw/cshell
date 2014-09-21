@@ -145,12 +145,12 @@ static char* test_remove_index() {
     printf("Pre-removal Element %d: %s\n", i, strArray[i]);
   }
   remove_index(strArray, 2, 4);
+  remove_index(strArray, 2, 3);
   for(int j = 0; j < 4; j++) {
     printf("Post-removal Element %d: %s\n", j, strArray[j]);
   }
-  mu_assert("ERROR: failed to remove item at index 2\n", strcmp(strArray[2], strD) == 0);
+  mu_assert("ERROR: failed to remove item at index 2\n", strArray[2] == NULL);
   
-  mu_assert("ERROR: new array is too long\n", strArray[3] == NULL);
   return 0;
 
 }
