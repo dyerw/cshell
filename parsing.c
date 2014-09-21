@@ -100,4 +100,5 @@ char** splitstr(char* str, const char* delim, int* count) {
 void remove_index(char** arr, int index, int size) {
   memmove(&arr[index], &arr[index + 1], size - index);
   arr = realloc(arr, sizeof(char*) * (size - 1));
+  arr[size-1] = NULL;
 }
