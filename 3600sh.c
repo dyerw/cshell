@@ -20,7 +20,7 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
-	//signal(SIGINT, interrupt_handler);
+  //signal(SIGINT, interrupt_handler);
   // Adam: Code for getting the necessary prompt sections
   char hostname[128]; // Need to choose a non-arbitrary number
   char dirbuf[PATH_MAX];   // same thing
@@ -83,6 +83,24 @@ void execute(int argc, char* argv[]) {
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
 
+  // Handle I/O redirection
+  // TODO: break out into a function???
+  int fd = -1;
+  for (int i = 0; i < argc; i++) {
+    if (strcmp(argv[i], "<") == 0) {
+      // Open the file following the < symbol
+      fd = open(argv[i + 1], O_RDONLY, S_IREAD);
+      
+      // Switch standard in with the file descriptor
+      dup2(1, fd);
+
+      // Delete these elements from the arguments array
+      remove_index(argv, i, argc);
+      remove_index(argv, i + 1, argc);
+      i = 0;
+    }
+  }
+
   pid_t childpid;
   childpid = fork();
 
@@ -100,6 +118,8 @@ void execute(int argc, char* argv[]) {
     //TODO: handle &
     waitpid(childpid, NULL, 0);
   }
+
+  if (fd != -1) { close(fd); }
   return;
 }
  

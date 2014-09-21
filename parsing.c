@@ -96,3 +96,7 @@ char** splitstr(char* str, const char* delim, int* count) {
   }
   return result;
 }
+
+void remove_index(char** arr, int index, int size) {
+  memmove(&arr[index], &arr[index + 1], size - index);
+}
