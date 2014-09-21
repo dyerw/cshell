@@ -149,7 +149,8 @@ static char* test_remove_index() {
     printf("Post-removal Element %d: %s\n", j, strArray[j]);
   }
   mu_assert("ERROR: failed to remove item at index 2\n", strcmp(strArray[2], strD) == 0);
-
+  
+  mu_assert("ERROR: new array is too long\n", strArray[3] == NULL);
   return 0;
 
 }
