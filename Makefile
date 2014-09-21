@@ -1,6 +1,6 @@
 TARGET = 3600sh
 
-default: run
+default: all
 
 $(TARGET): $(TARGET).c
 	#gcc -std=c99 -O0 -g -lm -Wall -pedantic -Werror -Wextra -o $@ $<
