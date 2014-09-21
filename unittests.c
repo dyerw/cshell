@@ -121,6 +121,13 @@ static char* test_splitstr() {
   return 0;
 }
 
+//////////////////
+// REMOVE_INDEX //
+//////////////////
+static char* test_remove_index() {
+  
+}
+
 // Runs all our test functions
 static char* all_tests() {
   mu_run_test(test_trimstr);

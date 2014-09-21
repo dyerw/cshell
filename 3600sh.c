@@ -85,22 +85,44 @@ void execute(int argc, char* argv[]) {
 
   // Handle I/O redirection
   // TODO: break out into a function???
-  int fd = -1;
+  // FIXME: This is not DRY at all
+  FILE* fd = NULL;
   for (int i = 0; i < argc; i++) {
+    // Check for input redirection
     if (strcmp(argv[i], "<") == 0) {
       // Open the file following the < symbol
-      fd = open(argv[i + 1], O_RDONLY, S_IREAD);
+      fd = fopen(argv[i + 1], "r");
       
       // Switch standard in with the file descriptor
-      dup2(1, fd);
+      dup2(0, fileno(fd));
 
       // Delete these elements from the arguments array
       remove_index(argv, i, argc);
       remove_index(argv, i + 1, argc);
       i = 0;
+      argc = argc - 2;
+    }
+    
+    // Check for output redirection
+    if (strcmp(argv[i], ">") == 0 || strcmp(argv[i], "2>") == 0) {
+      fd = fopen(argv[i + 1], "w"); 
+
+      int stream;
+      if (strcmp(argv[i], "2>") == 0) {
+        stream = 2;
+      }
+      else {
+        stream = 1;
+      }
+
+      dup2(stream, fileno(fd));
+
+      remove_index(argv, i, argc);
+      remove_index(argv, i + 1, argc); 
+      i = 0;
+      argc = argc - 2;
     }
   }
-
   pid_t childpid;
   childpid = fork();
 
@@ -119,7 +141,7 @@ void execute(int argc, char* argv[]) {
     waitpid(childpid, NULL, 0);
   }
 
-  if (fd != -1) { close(fd); }
+  if (fd != NULL) { fclose(fd); }
   return;
 }
  
