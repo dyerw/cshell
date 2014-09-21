@@ -21,9 +21,9 @@ CS3600 C
 ==============
 
 * The Make File
-  * To compile the shell, run 'make all'
+  * To compile the shell, run 'make' or 'make all'
   * To compile the unit tests, run 'make unittests'
-  * To compile and run the shell, run 'make' or 'make run'
+  * To compile and run the shell, run 'make run'
   * To compile and run the unit tests on the shell, run 'make utest'
   * To compile the shell and run the given tests, run 'make test'
   * To remove any executables, run 'make cleanall'
