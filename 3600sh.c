@@ -10,7 +10,6 @@
 
 #include "3600sh.h"
 #include "parsing.h"
-#include <pwd.h>
 
 #define USE(x) (x) = (x)
 
