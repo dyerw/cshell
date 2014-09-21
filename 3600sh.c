@@ -50,6 +50,10 @@ int main(int argc, char*argv[]) {
       char** nargv = NULL;
       int* nargc = calloc(1, sizeof(int));
       nargv = splitstr(result[i], " ", nargc);
+      
+      // Add a null terminator to the list of args
+      nargv = realloc(nargv, (*nargc + 1) * sizeof(char*));
+      nargv[*nargc] = NULL;
 
       execute(*nargc, nargv);
     }
@@ -87,7 +91,7 @@ void execute(int argc, char* argv[]) {
 
     // If the command isn't recognized
     if (execvp(argv[0], argv) == -1) {
-      perror("Error:\n");
+      puts("Error: Command not found.");
       exit(1);
     }
 
