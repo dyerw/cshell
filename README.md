@@ -21,10 +21,14 @@ CS3600 C
 ==============
 
 * The Make File
-  * To run the shell, run 'make'
-  * To run the unit tests on the shell, run 'make utest'
-  * To run the given tests, run 'make test'
+  * To compile the shell, run 'make all'
+  * To compile the unit tests, run 'make unittests'
+  * To compile and run the shell, run 'make' or 'make run'
+  * To compile and run the unit tests on the shell, run 'make utest'
+  * To compile the shell and run the given tests, run 'make test'
   * To remove any executables, run 'make cleanall'
+  * To compile and run gdb on the unit tests, run 'make debug\_utest'
+  * To compile and run gdb on the shell, run 'make debug\_shell'
 * What the shell supports
   * The shell supports commands found in PATH, I/O redirection, and background process
   * Any number of arguments or any length may be supplied
