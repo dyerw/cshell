@@ -21,7 +21,6 @@ int main(int argc, char*argv[]) {
   setvbuf(stdout, NULL, _IONBF, 0); 
 
 	//signal(SIGINT, interrupt_handler);
-
   // Adam: Code for getting the necessary prompt sections
   char hostname[128]; // Need to choose a non-arbitrary number
   char dirbuf[PATH_MAX];   // same thing
@@ -55,7 +54,7 @@ int main(int argc, char*argv[]) {
       execute(*nargc, nargv);
     }
   }
-
+  do_exit();
   return 0;
 }
 
@@ -88,7 +87,7 @@ void execute(int argc, char* argv[]) {
 
     // If the command isn't recognized
     if (execvp(argv[0], argv) == -1) {
-      perror("execvp: Couldn't find the specified command\n");
+      perror("Error:\n");
       exit(1);
     }
 
