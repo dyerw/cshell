@@ -29,6 +29,8 @@ CS3600 C
   * To remove any executables, run 'make cleanall'
   * To compile and run gdb on the unit tests, run 'make debug\_utest'
   * To compile and run gdb on the shell, run 'make debug\_shell'
+* Compiling
+  * Upon compiling, executables are created in a bin directory within the current directory 
 * What the shell supports
   * The shell supports commands found in PATH, I/O redirection, and background process
   * Any number of arguments or any length may be supplied
