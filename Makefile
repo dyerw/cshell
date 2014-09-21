@@ -11,8 +11,11 @@ all: $(TARGET)
 run: all
 		./bin/3600sh
 
-gdb: all
+debug_shell: all
 		gdb ./bin/3600sh
+
+debug_utest: unittests
+					gdb ./bin/unittests
 
 test: all
 	cp bin/3600sh ./3600sh
