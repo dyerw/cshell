@@ -99,10 +99,8 @@ void execute(int argc, char* argv[]) {
   }
   return;
 }
-
+ 
 /*
- * 
-
 void interrupt_handler(int signum) {
     pid_t childpid;
     if (!(childpid == 0)) {

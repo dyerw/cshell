@@ -1,11 +1,18 @@
 TARGET = 3600sh
 
+default: run
+
 $(TARGET): $(TARGET).c
 	#gcc -std=c99 -O0 -g -lm -Wall -pedantic -Werror -Wextra -o $@ $<
 	gcc -std=c99 -O0 -g -lm -Wall -pedantic -Wextra -o ./bin/$@ $< parsing.c
 
-
 all: $(TARGET) 
+
+run: all
+		./bin/3600sh
+
+gdb: all
+		gdb ./bin/3600sh
 
 test: all
 	cp bin/3600sh ./3600sh
