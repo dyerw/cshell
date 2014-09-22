@@ -31,6 +31,9 @@ int main(int argc, char*argv[]) {
   while (!feof(stdin)) {         
     // You should issue the prompt here
     // Prints in form of:   [username]@[host]:[directory, full path]>[space] 
+    fflush(stdin);
+    fflush(stderr);
+    fflush(stdout);    
     printf("%s@%s:%s> ", getpwuid(getuid())->pw_name, hostname, dirbuf);
 
     // You should read in the command and execute it here
@@ -87,14 +90,20 @@ void execute(int argc, char* argv[]) {
   // TODO: break out into a function???
   // FIXME: This is not DRY at all
   FILE* fd = NULL;
+  int new_stdin = -1;
+  int new_stderr = -1;
+  int new_stdout = -1;
+  
   for (int i = 0; i < argc; i++) {
+
     // Check for input redirection
     if (strcmp(argv[i], "<") == 0) {
       // Open the file following the < symbol
       fd = fopen(argv[i + 1], "r");
       
       // Switch standard in with the file descriptor
-      dup2(0, fileno(fd));
+      // dup2(fileno(fd), 0);
+      new_stdin = fileno(fd);
 
       // Delete these elements from the arguments array
       remove_index(argv, i, argc);
@@ -108,15 +117,14 @@ void execute(int argc, char* argv[]) {
     if (strcmp(argv[i], ">") == 0 || strcmp(argv[i], "2>") == 0) {
       fd = fopen(argv[i + 1], "w"); 
 
-      int stream;
       if (strcmp(argv[i], "2>") == 0) {
-        stream = 2;
+        new_stderr = fileno(fd);
       }
       else {
-        stream = 1;
+        new_stdout = fileno(fd);
       }
 
-      dup2(stream, fileno(fd));
+      //dup2(fileno(fd), stream);
 
       remove_index(argv, i, argc);
       argc--;
@@ -130,6 +138,10 @@ void execute(int argc, char* argv[]) {
 
   // If we're in the child
   if (childpid == 0) {
+    // Check to see if we need to switch I/O
+    if ( new_stdin != -1 ) { dup2(new_stdin, 0); }
+    if ( new_stdout != -1 ) { dup2(new_stdout, 1); }
+    if ( new_stderr != -1 ) { dup2(new_stderr, 2); }
 
     // If the command isn't recognized
     if (execvp(argv[0], argv) == -1) {
