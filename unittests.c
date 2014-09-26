@@ -144,9 +144,16 @@ static char* test_remove_index() {
   for(int i = 0; i < 4; i++) {
     printf("Pre-removal Element %d: %s\n", i, strArray[i]);
   }
-  remove_index(strArray, 2, 4);
-  remove_index(strArray, 2, 3);
-  for(int j = 0; j < 4; j++) {
+
+  char** newArray;
+  newArray = remove_index(strArray, 2, 4);
+  free(strArray);
+  strArray = newArray;
+ 
+  newArray = remove_index(strArray, 2, 3);
+  free(strArray);
+  strArray = newArray;
+  for(int j = 0; j < 3; j++) {
     printf("Post-removal Element %d: %s\n", j, strArray[j]);
   }
   mu_assert("ERROR: failed to remove item at index 2\n", strArray[2] == NULL);

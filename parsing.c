@@ -20,30 +20,30 @@ void trimstr(char* str) {
 
   // decrement counter for last non-space char
   while (lastchar > 0) {
-		if (isspace(str[lastchar])) {
-			lastchar--;
-		} else {
-			break;
-		}
-	}
+    if (isspace(str[lastchar])) {
+      lastchar--;
+    } else {
+      break;
+    }
+  }
 
   while (str[i] != '\0' && i < lastchar + 1) {
     if (isspace(str[i])) {
-				if (prev_space) {  // if the previous slot was a space
-					i++;						 // just increment str's counter
-				} else {
-					tmp[j] = str[i]; // copy it over
-					prev_space = 1;	 // let the next slot know the previous was a space
-					i++;
-					j++;
-				} 
+        if (prev_space) {  // if the previous slot was a space
+          i++;             // just increment str's counter
+        } else {
+          tmp[j] = str[i]; // copy it over
+          prev_space = 1;  // let the next slot know the previous was a space
+          i++;
+          j++;
+        } 
     } else { // if this slot is a alphanumeric character
-			tmp[j] = str[i]; // copy value over
-			prev_space = 0;  // let next slot know this is not a space
-			j++;
-			i++;
-		}
-	}
+      tmp[j] = str[i]; // copy value over
+      prev_space = 0;  // let next slot know this is not a space
+      j++;
+      i++;
+    }
+  }
 
   tmp[j+1] = '\0'; // set null byte to the end of the string
   strcpy(str, tmp); // copy the corrected string back to the input
@@ -60,8 +60,8 @@ void trimstr(char* str) {
  * Note that the given delim can have multiple delims. 
  * Each char supplied is a delim.
  * For example, given " \n\t", 
- * 		this function will split "this is\ta\n sentence" into:
- * 		"this" "is" "a" "sentence".
+ *    this function will split "this is\ta\n sentence" into:
+ *    "this" "is" "a" "sentence".
  */
 char** splitstr(char* str, const char* delim, int* count) {
   char** result = NULL;  
@@ -97,8 +97,15 @@ char** splitstr(char* str, const char* delim, int* count) {
   return result;
 }
 
-void remove_index(char** arr, int index, int size) {
-  memmove(&arr[index], &arr[index + 1], size - index);
-  arr = realloc(arr, sizeof(char*) * (size - 1));
-  arr[size-1] = NULL;
+// Returns a copy of the array passed in, but without the
+// specified index
+char** remove_index(char** arr, int index, int size) {
+  char** new_array = calloc(size - 1, sizeof(char*));
+  for (int i = 0; i < size; i++) {
+    if (i != index) {
+      if (i > index) { new_array[i - 1] = arr[i]; }
+      else { new_array[i] = arr[i]; }
+    }
+  }
+  return new_array;
 }

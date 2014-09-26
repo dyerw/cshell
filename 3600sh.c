@@ -27,8 +27,8 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
-	//TODO fix or delete this
-	//signal(SIGINT, interrupt_handler);
+  //TODO fix or delete this
+  //signal(SIGINT, interrupt_handler);
   char hostname[128]; // Need to choose a non-arbitrary number
   char dirbuf[PATH_MAX];
   gethostname(hostname, sizeof(hostname));
