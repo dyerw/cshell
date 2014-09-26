@@ -57,9 +57,8 @@ int main(int argc, char*argv[]) {
 
     for (int i = 0; i < *size; i++) {
       // For each command, split it into arguments
-      char** nargv = NULL;
       int* nargc = calloc(1, sizeof(int));
-      nargv = splitstr(result[i], " ", nargc);
+      char** nargv = splitstr(result[i], " ", nargc);
       
       // Add a null terminator to the list of args
       nargv = realloc(nargv, (*nargc + 1) * sizeof(char*));

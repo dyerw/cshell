@@ -12,7 +12,7 @@
  *   "wow this  is   so    cool" -> "wow this is so cool"
  */
 void trimstr(char* str) {
-  char* tmp = (char*) calloc(strlen(str), sizeof(char));  // allocate space for a temp string
+  char* tmp = calloc(strlen(str), sizeof(char));  // allocate space for a temp string
   int prev_space = 1; // 1 if is a space, 0 if not. Set to 1 by default to get rid of leading spaces
   int i = 0; // counter for the inputted string
   int j = 0; // counter for the corrected copy
@@ -100,12 +100,14 @@ char** splitstr(char* str, const char* delim, int* count) {
 // Returns a copy of the array passed in, but without the
 // specified index
 char** remove_index(char** arr, int index, int size) {
-  char** new_array = calloc(size - 1, sizeof(char*));
+  char** new_array = calloc(size, sizeof(char*));
   for (int i = 0; i < size; i++) {
     if (i != index) {
       if (i > index) { new_array[i - 1] = arr[i]; }
       else { new_array[i] = arr[i]; }
     }
   }
+  // add a null terminator so our command can be read correctly
+  new_array[size - 1] = NULL;
   return new_array;
 }
