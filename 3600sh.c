@@ -8,6 +8,13 @@
  * details.
  */
 
+/* Clean-up TODO:
+ * non-arbitrary hostname buffer size
+ * non-arbitrary fgets
+ * Either remove or fix up interrupt handler stuff
+ * fix the dry code
+ */
+
 #include "3600sh.h"
 #include "parsing.h"
 
@@ -20,12 +27,12 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
+	//TODO fix or delete this
 	//signal(SIGINT, interrupt_handler);
-  // Adam: Code for getting the necessary prompt sections
   char hostname[128]; // Need to choose a non-arbitrary number
-  char dirbuf[PATH_MAX];   // same thing
+  char dirbuf[PATH_MAX];
   gethostname(hostname, sizeof(hostname));
-  getcwd(dirbuf, 128); // non-arbitrary num needed
+  getcwd(dirbuf, PATH_MAX);
   
   // Main loop that reads a command and executes it
   while (!feof(stdin)) {         
