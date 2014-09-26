@@ -38,6 +38,9 @@ int main(int argc, char*argv[]) {
   while (!feof(stdin)) {         
     // You should issue the prompt here
     // Prints in form of:   [username]@[host]:[directory, full path]>[space] 
+    fflush(stdin);
+    fflush(stderr);
+    fflush(stdout);    
     printf("%s@%s:%s> ", getpwuid(getuid())->pw_name, hostname, dirbuf);
 
     // You should read in the command and execute it here
@@ -90,11 +93,62 @@ void execute(int argc, char* argv[]) {
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
 
+  // Handle I/O redirection
+  // TODO: break out into a function???
+  // FIXME: This is not DRY at all
+  FILE* fd = NULL;
+  int new_stdin = -1;
+  int new_stderr = -1;
+  int new_stdout = -1;
+  
+  for (int i = 0; i < argc; i++) {
+
+    // Check for input redirection
+    if (strcmp(argv[i], "<") == 0) {
+      // Open the file following the < symbol
+      fd = fopen(argv[i + 1], "r");
+      
+      // Switch standard in with the file descriptor
+      // dup2(fileno(fd), 0);
+      new_stdin = fileno(fd);
+
+      // Delete these elements from the arguments array
+      remove_index(argv, i, argc);
+      argc--;
+      remove_index(argv, i, argc);
+      argc--;
+      i = 0;
+    }
+    
+    // Check for output redirection
+    if (strcmp(argv[i], ">") == 0 || strcmp(argv[i], "2>") == 0) {
+      fd = fopen(argv[i + 1], "w"); 
+
+      if (strcmp(argv[i], "2>") == 0) {
+        new_stderr = fileno(fd);
+      }
+      else {
+        new_stdout = fileno(fd);
+      }
+
+      //dup2(fileno(fd), stream);
+
+      remove_index(argv, i, argc);
+      argc--;
+      remove_index(argv, i, argc);
+      argc--; 
+      i = 0;
+    }
+  }
   pid_t childpid;
   childpid = fork();
 
   // If we're in the child
   if (childpid == 0) {
+    // Check to see if we need to switch I/O
+    if ( new_stdin != -1 ) { dup2(new_stdin, 0); }
+    if ( new_stdout != -1 ) { dup2(new_stdout, 1); }
+    if ( new_stderr != -1 ) { dup2(new_stderr, 2); }
 
     // If the command isn't recognized
     if (execvp(argv[0], argv) == -1) {
@@ -107,6 +161,8 @@ void execute(int argc, char* argv[]) {
     //TODO: handle &
     waitpid(childpid, NULL, 0);
   }
+
+  if (fd != NULL) { fclose(fd); }
   return;
 }
  

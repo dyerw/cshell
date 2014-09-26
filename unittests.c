@@ -121,10 +121,45 @@ static char* test_splitstr() {
   return 0;
 }
 
+//////////////////
+// REMOVE_INDEX //
+//////////////////
+static char* test_remove_index() {
+// takes an array of strings, and index, and an array size
+// returns void
+  char* strA = calloc(2, sizeof(char));
+  strcpy(strA, "ls");
+  char* strB = calloc(2, sizeof(char));
+  strcpy(strB, "-a");
+  char* strC = calloc(1, sizeof(char));
+  strcpy(strC, "<");
+  char* strD = calloc(8, sizeof(char));
+  strcpy(strD, "test.txt");
+
+  char** strArray = calloc(4, sizeof(char*)); 
+  strArray[0] = strA;
+  strArray[1] = strB;
+  strArray[2] = strC;
+  strArray[3] = strD;
+  for(int i = 0; i < 4; i++) {
+    printf("Pre-removal Element %d: %s\n", i, strArray[i]);
+  }
+  remove_index(strArray, 2, 4);
+  remove_index(strArray, 2, 3);
+  for(int j = 0; j < 4; j++) {
+    printf("Post-removal Element %d: %s\n", j, strArray[j]);
+  }
+  mu_assert("ERROR: failed to remove item at index 2\n", strArray[2] == NULL);
+  
+  return 0;
+
+}
+
 // Runs all our test functions
 static char* all_tests() {
   mu_run_test(test_trimstr);
   mu_run_test(test_splitstr);
+  mu_run_test(test_remove_index);
   return 0;
 }
 
