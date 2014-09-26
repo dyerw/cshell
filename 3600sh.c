@@ -113,10 +113,19 @@ void execute(int argc, char* argv[]) {
       new_stdin = fileno(fd);
 
       // Delete these elements from the arguments array
+      /*
       remove_index(argv, i, argc);
       argc--;
       remove_index(argv, i, argc);
+      argc--; */
+
+      char** newArr;
+      newArr = remove_index(argv, i, argc);
       argc--;
+      newArr = remove_index(newArr, i, argc);
+      argc--;
+      free(argv);
+      argv = newArr;
       i = 0;
     }
     
@@ -133,10 +142,21 @@ void execute(int argc, char* argv[]) {
 
       //dup2(fileno(fd), stream);
 
+      /*
       remove_index(argv, i, argc);
       argc--;
       remove_index(argv, i, argc);
       argc--; 
+      i = 0;
+      */
+
+      char** newArr;
+      newArr = remove_index(argv, i, argc);
+      argc--;
+      newArr = remove_index(newArr, i, argc);
+      argc--;
+      free(argv);
+      argv = newArr;
       i = 0;
     }
   }
