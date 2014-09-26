@@ -93,6 +93,19 @@ void execute(int argc, char* argv[]) {
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
 
+  // Check if we're going to run this command in the background
+  int background = 0;
+  if (strcmp(argv[argc - 1], "&") == 0) {
+    background = 1;
+    char** tmp;
+    tmp = remove_index(argv, argc - 1, argc);
+    free(argv);
+    argv = tmp;
+    argc--;
+  }
+  
+
+
   // Handle I/O redirection
   // TODO: break out into a function???
   // FIXME: This is not DRY at all
@@ -158,8 +171,9 @@ void execute(int argc, char* argv[]) {
 
   // If we're the parent
   } else {
-    //TODO: handle &
-    waitpid(childpid, NULL, 0);
+    if (!background) {
+      waitpid(childpid, NULL, 0);
+    }
   }
 
   if (fd != NULL) { fclose(fd); }
