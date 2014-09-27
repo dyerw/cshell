@@ -162,11 +162,50 @@ static char* test_remove_index() {
 
 }
 
+/////////////////////////
+// change_escape_chars //
+/////////////////////////
+static char* test_change_escape_chars() {
+  char* strA = calloc(4, sizeof(char));
+  strcpy(strA, "ls\\\&");
+  char* strB = calloc(4, sizeof(char));
+  strcpy(strB, "ls\\\ ");
+  char* strC = calloc(4, sizeof(char));
+  strcpy(strC, "ls\\\\");
+  char* strD = calloc(4, sizeof(char));
+  strcpy(strD, "ls\\\t");
+  char* strE = calloc(4, sizeof(char));
+  strcpy(strE, "ls\\a");
+
+
+  change_escape_chars(strA);
+  change_escape_chars(strB);
+  change_escape_chars(strC);
+  change_escape_chars(strD);
+  change_escape_chars(strE);
+
+  mu_assert("ERROR: failed to change escape char for \&\n", strcmp(strA, "ls\\a") == 0);
+  mu_assert("ERROR: failed to change escape char for space\n", strcmp(strB, "ls\\s") == 0);
+  mu_assert("ERROR: failed to change escape char for \\\n", strcmp(strC, "ls\\b") == 0);
+  mu_assert("ERROR: failed to change escape char for \\t\n", strcmp(strD, "ls\\t") == 0);
+  //mu_assert("ERROR: failed to change escape char for \&\n", strcmp(strE, "ls\\a") == 0);
+
+  free(strA);
+  free(strB);
+  free(strC);
+  free(strD);
+  free(strE);
+
+  return 0;
+}
+
+
 // Runs all our test functions
 static char* all_tests() {
   mu_run_test(test_trimstr);
   mu_run_test(test_splitstr);
   mu_run_test(test_remove_index);
+  mu_run_test(test_change_escape_char);
   return 0;
 }
 
