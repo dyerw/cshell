@@ -12,6 +12,7 @@
 #define _3600sh_h
 
 #define _BSD_SOURCE
+#define _POSIX_C_SOURCE 1
 
 #include "parsing.h"
 #include <stdio.h>

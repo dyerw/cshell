@@ -38,7 +38,6 @@ my @tries = (	"ls",
                 "ls /mfmfoifoi 2> $t1\ncat $t1");
 test($problem, \@tries);
 
-=begin
 print "\nFinal project tests\n";
 my @tries = (	"ls foo\\ bar",
 		"ls \\\\baz\\ foo\\ bah\\\\\\ ",
@@ -71,8 +70,6 @@ my @tries = (	"ls \\8",
 		"fndsiofnsodfnsof",
 		"& & & ls");
 test($problem, \@tries);
-=end
-=cut
 
 print "\nPassed $passed of $total tests.\n";
 
