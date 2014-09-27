@@ -91,6 +91,7 @@ void execute(int argc, char* argv[]) {
   
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
+  if (strcmp(argv[0], "quit") == 0) { do_exit(); } 
 
   // Check if we're going to run this command in the background
   int background = 0;

@@ -18,6 +18,7 @@ TODO
 * Handling interrupts (optional)
 * Handling escape characters
 * Passing the final project tests and stress tests
+* FIX MAKEFILE SO THAT IT COMPILES TREATING WARNINGS AS ERRORS, AND MAKE SURE EVERYTHING STILL WORKS
 
 
 CS3600 C 
