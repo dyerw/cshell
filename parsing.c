@@ -111,3 +111,43 @@ char** remove_index(char** arr, int index, int size) {
   new_array[size - 1] = NULL;
   return new_array;
 }
+
+/* 
+ * This function takes a string and mutates it in place such that
+ * all occurences of \{space} \& and \\ are replaced with \s 
+ * \a and \b. The point of this being that we can then pass this
+ * input to our parsing functions and have them exhibit correct
+ * behavior for escape chars.
+ *
+ * e.g. for the input: cat foo\ bar
+ * we would get the args [cat, foo\, bar]
+ * but the input: cat foo\sbar
+ * would correctly get the args [cat, foo\sbar]
+ * which we can then replace with a space once all parsing has occurred.
+ *
+ * However, \a \s and \b are not actually valid escape chars so we need
+ * to make sure to throw errors if we encounter them here, since our 
+ * replacement function won't know the difference.
+ */
+void change_escape_chars(char* str) {
+  int i = 0;
+  while(str[i] != NULL) {
+    if (str[i] == '\\') {
+      if (str[i + 1] == ' ') {
+        str[i + 1] = 's';
+      }
+      else if (str[i + 1] == '&') {
+        str[i + 1] = 'a';
+      }
+      else if (str[i + 1] == '\\') {
+        str[i + 1] = 'b';
+      }
+
+      // Return -1 for invalid chars
+      else if (str[i + 1] == 'b' || str[i + 1] == 'a' || str[i + 1] == 's') {
+        return -1; 
+      }
+    }
+  }
+  return 0;
+}
