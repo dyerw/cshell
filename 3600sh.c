@@ -28,7 +28,7 @@ int main(int argc, char*argv[]) {
   setvbuf(stdout, NULL, _IONBF, 0); 
 
   //TODO fix or delete this
-  //signal(SIGINT, interrupt_handler);
+  signal(SIGINT, interrupt_handler);
   char hostname[128]; // Need to choose a non-arbitrary number
   char dirbuf[PATH_MAX];
   gethostname(hostname, sizeof(hostname));
@@ -187,12 +187,15 @@ void execute(int argc, char* argv[]) {
   return;
 }
  
-/*
-void interrupt_handler(int signum) {
-    pid_t childpid;
+
+void interrupt_handler() {
+   /*
+   pid_t childpid;
     if (!(childpid == 0)) {
         printf("  The process has been stopped\n");
-        kill(childpid, SIGINT);
-    }
+        kill(childpid, signum);
+    } */
+    printf("   Interrupt performed");
+    return;
 }
-*/
+
