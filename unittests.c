@@ -166,15 +166,15 @@ static char* test_remove_index() {
 // change_escape_chars //
 /////////////////////////
 static char* test_change_escape_chars() {
-  char* strA = calloc(4, sizeof(char));
+  char* strA = calloc(5, sizeof(char));
   strcpy(strA, "ls\\\&");
-  char* strB = calloc(4, sizeof(char));
+  char* strB = calloc(5, sizeof(char));
   strcpy(strB, "ls\\\ ");
-  char* strC = calloc(4, sizeof(char));
+  char* strC = calloc(5, sizeof(char));
   strcpy(strC, "ls\\\\");
-  char* strD = calloc(4, sizeof(char));
-  strcpy(strD, "ls\\\t");
-  char* strE = calloc(4, sizeof(char));
+  char* strD = calloc(5, sizeof(char));
+  strcpy(strD, "ls\\t");
+  char* strE = calloc(5, sizeof(char));
   strcpy(strE, "ls\\a");
 
 
@@ -205,7 +205,7 @@ static char* all_tests() {
   mu_run_test(test_trimstr);
   mu_run_test(test_splitstr);
   mu_run_test(test_remove_index);
-  mu_run_test(test_change_escape_char);
+  mu_run_test(test_change_escape_chars);
   return 0;
 }
 

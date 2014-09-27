@@ -129,9 +129,9 @@ char** remove_index(char** arr, int index, int size) {
  * to make sure to throw errors if we encounter them here, since our 
  * replacement function won't know the difference.
  */
-void change_escape_chars(char* str) {
+int change_escape_chars(char* str) {
   int i = 0;
-  while(str[i] != NULL) {
+  while(str[i] != '\0') {
     if (str[i] == '\\') {
       if (str[i + 1] == ' ') {
         str[i + 1] = 's';
@@ -148,6 +148,7 @@ void change_escape_chars(char* str) {
         return -1; 
       }
     }
+    i++;
   }
   return 0;
 }

@@ -23,7 +23,7 @@ test: all
 	rm ./3600sh
 
 unittests: unittests.c
-	gcc -std=c99 -g -lm -Wall -pedantic -Wextra -Werror unittests.c parsing.c -o ./bin/unittests
+	gcc -std=c99 -g -lm -Wall -pedantic -Wextra unittests.c parsing.c -o ./bin/unittests
 
 utest: unittests
 	./bin/unittests
