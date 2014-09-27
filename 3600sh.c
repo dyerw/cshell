@@ -92,6 +92,7 @@ void execute(int argc, char* argv[]) {
   
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
+  if (strcmp(argv[0], "quit") == 0) { do_exit(); } 
 
   // Handle I/O redirection
   // TODO: break out into a function???
