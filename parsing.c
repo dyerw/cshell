@@ -87,7 +87,7 @@ char** splitstr(char* str, const char* delim, int* count) {
     // Store this token in the next available index in our 
     // result array
     result = realloc(result, *count * sizeof(char*));
-    result[*count - 1] = calloc(strlen(token), sizeof(char));
+    result[*count - 1] = calloc(strlen(token) + 1, sizeof(char));
 
     strcpy(result[*count - 1], token);
    
@@ -171,7 +171,7 @@ int change_escape_chars(char* str) {
  * replacement function won't know the difference.
  */
 int revert_escape_chars(char* str) {
-  char* tmp = calloc(strlen(str), sizeof(char)); 
+  char* tmp = calloc(strlen(str) + 1, sizeof(char)); 
 
   int i = 0;
   int j = 0;
@@ -204,13 +204,13 @@ int revert_escape_chars(char* str) {
     i++;
     j++;
   }
-  j++;
-  tmp[j] = '\0';
-  tmp = realloc(tmp, j * sizeof(char));
-  free(str);
 
-  str = calloc(j, sizeof(char));
+  tmp[j] = '\0';
+  tmp = realloc(tmp, (j + 1) * sizeof(char));
+  //free(str);
+
   strcpy(str, tmp);
+  str = realloc(str, (j + 1) * sizeof(char));
   free(tmp);
   return 0;
 }

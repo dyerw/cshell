@@ -48,7 +48,10 @@ int main(int argc, char*argv[]) {
     fgets(input, 200, stdin); 
     
     // Escape all the chars that are going to mess w/ the parsing
-    change_escape_chars(input);
+    if (change_escape_chars(input) == -1) {
+      puts("Error: Unrecognized escape sequence.");
+      break;
+    }
 
     // Trim the spaces
     trimstr(input);
@@ -61,7 +64,7 @@ int main(int argc, char*argv[]) {
     for (int i = 0; i < *size; i++) {
       // For each command, split it into arguments
       int* nargc = calloc(1, sizeof(int));
-      char** nargv = splitstr(result[i], " ", nargc);
+      char** nargv = splitstr(result[i], " \t", nargc);
       
       // Add a null terminator to the list of args
       nargv = realloc(nargv, (*nargc + 1) * sizeof(char*));
@@ -163,7 +166,10 @@ void execute(int argc, char* argv[]) {
 
   // Substitute the correct escape chars for each argument
   for (int j = 0; j < argc; j++) {
-    revert_escape_chars(argv[j]);
+    if (revert_escape_chars(argv[j]) == -1) {
+      puts("Error: Unrecognized escape sequence.");
+      return;    
+    }
   }
 
   pid_t childpid;
