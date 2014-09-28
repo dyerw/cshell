@@ -167,9 +167,9 @@ static char* test_remove_index() {
 /////////////////////////
 static char* test_change_escape_chars() {
   char* strA = calloc(5, sizeof(char));
-  strcpy(strA, "ls\\\&");
+  strcpy(strA, "ls\\&");
   char* strB = calloc(5, sizeof(char));
-  strcpy(strB, "ls\\\ ");
+  strcpy(strB, "ls\\ ");
   char* strC = calloc(5, sizeof(char));
   strcpy(strC, "ls\\\\");
   char* strD = calloc(5, sizeof(char));
@@ -184,7 +184,7 @@ static char* test_change_escape_chars() {
   change_escape_chars(strD);
   change_escape_chars(strE);
 
-  mu_assert("ERROR: failed to change escape char for \&\n", strcmp(strA, "ls\\a") == 0);
+  mu_assert("ERROR: failed to change escape char for &\n", strcmp(strA, "ls\\a") == 0);
   mu_assert("ERROR: failed to change escape char for space\n", strcmp(strB, "ls\\s") == 0);
   mu_assert("ERROR: failed to change escape char for \\\n", strcmp(strC, "ls\\b") == 0);
   mu_assert("ERROR: failed to change escape char for \\t\n", strcmp(strD, "ls\\t") == 0);
@@ -199,6 +199,36 @@ static char* test_change_escape_chars() {
   return 0;
 }
 
+/////////////////////////
+// revert_escape_chars //
+/////////////////////////
+static char* test_revert_escape_chars() {
+  char* strA = calloc(5, sizeof(char));
+  strcpy(strA, "ls\\a");
+  char* strB = calloc(5, sizeof(char));
+  strcpy(strB, "ls\\s");
+  char* strC = calloc(5, sizeof(char));
+  strcpy(strC, "ls\\b");
+  char* strD = calloc(5, sizeof(char));
+  strcpy(strD, "ls\\t");
+
+  revert_escape_chars(strA);
+  revert_escape_chars(strB);
+  revert_escape_chars(strC);
+  revert_escape_chars(strD);
+
+  mu_assert("ERROR: failed to revert escape char for &\n", strcmp(strA, "ls\\&") == 0);
+  mu_assert("ERROR: failed to revert escape char for space\n", strcmp(strB, "ls\\ ") == 0);
+  mu_assert("ERROR: failed to revert escape char for \\\n", strcmp(strC, "ls\\\\") == 0);
+  mu_assert("ERROR: failed to revert escape char for \\t\n", strcmp(strD, "ls\\t") == 0);
+
+  free(strA);
+  free(strB);
+  free(strC);
+  free(strD);
+
+  return 0;
+}
 
 // Runs all our test functions
 static char* all_tests() {
@@ -206,6 +236,7 @@ static char* all_tests() {
   mu_run_test(test_splitstr);
   mu_run_test(test_remove_index);
   mu_run_test(test_change_escape_chars);
+  mu_run_test(test_revert_escape_chars);
   return 0;
 }
 

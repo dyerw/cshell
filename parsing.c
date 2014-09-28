@@ -152,3 +152,44 @@ int change_escape_chars(char* str) {
   }
   return 0;
 }
+
+/* 
+ * This function takes a string and mutates it in place such that
+ * all occurences of \{space} \& and \\ are replaced with \s 
+ * \a and \b. The point of this being that we can then pass this
+ * input to our parsing functions and have them exhibit correct
+ * behavior for escape chars.
+ *
+ * e.g. for the input: cat foo\ bar
+ * we would get the args [cat, foo\, bar]
+ * but the input: cat foo\sbar
+ * would correctly get the args [cat, foo\sbar]
+ * which we can then replace with a space once all parsing has occurred.
+ *
+ * However, \a \s and \b are not actually valid escape chars so we need
+ * to make sure to throw errors if we encounter them here, since our 
+ * replacement function won't know the difference.
+ */
+int revert_escape_chars(char* str) {
+  int i = 0;
+  while(str[i] != '\0') {
+    if (str[i] == '\\') {
+      if (str[i + 1] == 's') {
+        str[i + 1] = ' ';
+      }
+      else if (str[i + 1] == 'a') {
+        str[i + 1] = '&';
+      }
+      else if (str[i + 1] == 'b') {
+        str[i + 1] = '\\';
+      }
+
+      // Return -1 for invalid chars
+      else if (str[i + 1] == '\\' || str[i + 1] == '&' || str[i + 1] == ' ') {
+        return -1; 
+      }
+    }
+    i++;
+  }
+  return 0;
+}
