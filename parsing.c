@@ -12,7 +12,7 @@
  *   "wow this  is   so    cool" -> "wow this is so cool"
  */
 void trimstr(char* str) {
-  char* tmp = calloc(strlen(str), sizeof(char));  // allocate space for a temp string
+  char* tmp = calloc(strlen(str) + 1, sizeof(char));  // allocate space for a temp string
   int prev_space = 1; // 1 if is a space, 0 if not. Set to 1 by default to get rid of leading spaces
   int i = 0; // counter for the inputted string
   int j = 0; // counter for the corrected copy
@@ -206,7 +206,7 @@ int revert_escape_chars(char* str) {
   }
   j++;
   tmp[j] = '\0';
-  realloc(tmp, j * sizeof(char));
+  tmp = realloc(tmp, j * sizeof(char));
   free(str);
 
   str = calloc(j, sizeof(char));

@@ -47,6 +47,9 @@ int main(int argc, char*argv[]) {
     char* input = calloc(200, sizeof(char));
     fgets(input, 200, stdin); 
     
+    // Escape all the chars that are going to mess w/ the parsing
+    change_escape_chars(input);
+
     // Trim the spaces
     trimstr(input);
     
@@ -126,12 +129,6 @@ void execute(int argc, char* argv[]) {
       new_stdin = fileno(fd);
 
       // Delete these elements from the arguments array
-      /*
-      remove_index(argv, i, argc);
-      argc--;
-      remove_index(argv, i, argc);
-      argc--; */
-
       char** newArr;
       newArr = remove_index(argv, i, argc);
       argc--;
@@ -153,16 +150,6 @@ void execute(int argc, char* argv[]) {
         new_stdout = fileno(fd);
       }
 
-      //dup2(fileno(fd), stream);
-
-      /*
-      remove_index(argv, i, argc);
-      argc--;
-      remove_index(argv, i, argc);
-      argc--; 
-      i = 0;
-      */
-
       char** newArr;
       newArr = remove_index(argv, i, argc);
       argc--;
@@ -173,6 +160,12 @@ void execute(int argc, char* argv[]) {
       i = 0;
     }
   }
+
+  // Substitute the correct escape chars for each argument
+  for (int j = 0; j < argc; j++) {
+    revert_escape_chars(argv[j]);
+  }
+
   pid_t childpid;
   childpid = fork();
 
