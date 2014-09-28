@@ -211,16 +211,20 @@ static char* test_revert_escape_chars() {
   strcpy(strC, "ls\\b");
   char* strD = calloc(5, sizeof(char));
   strcpy(strD, "ls\\t");
+  char* strE = calloc(9, sizeof(char));
+  strcpy(strE, "ls\\a\\s\\t");
 
   revert_escape_chars(strA);
   revert_escape_chars(strB);
   revert_escape_chars(strC);
   revert_escape_chars(strD);
+  revert_escape_chars(strE);
 
-  mu_assert("ERROR: failed to revert escape char for &\n", strcmp(strA, "ls\\&") == 0);
-  mu_assert("ERROR: failed to revert escape char for space\n", strcmp(strB, "ls\\ ") == 0);
-  mu_assert("ERROR: failed to revert escape char for \\\n", strcmp(strC, "ls\\\\") == 0);
-  mu_assert("ERROR: failed to revert escape char for \\t\n", strcmp(strD, "ls\\t") == 0);
+  mu_assert("ERROR: failed to revert escape char for &\n", strcmp(strA, "ls&") == 0);
+  mu_assert("ERROR: failed to revert escape char for space\n", strcmp(strB, "ls ") == 0);
+  mu_assert("ERROR: failed to revert escape char for \\\n", strcmp(strC, "ls\\") == 0);
+  mu_assert("ERROR: failed to revert escape char for \\t\n", strcmp(strD, "ls\t") == 0);
+  mu_assert("ERROR: failed to revert escape chars for \\a\\s\\t\n", strcmp(strE, "ls& \t") == 0);
 
   free(strA);
   free(strB);
