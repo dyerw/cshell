@@ -10,6 +10,9 @@ all: $(TARGET)
 
 run: all
 		./bin/3600sh
+		
+valgrind: all
+	valgrind --tool=memcheck --leak-check=yes ./bin/3600sh
 
 debug_shell: all
 		gdb ./bin/3600sh
