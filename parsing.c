@@ -207,10 +207,10 @@ int revert_escape_chars(char* str) {
 
   tmp[j] = '\0';
   tmp = realloc(tmp, (j + 1) * sizeof(char));
-  //free(str);
 
   strcpy(str, tmp);
   str = realloc(str, (j + 1) * sizeof(char));
+  
   free(tmp);
   return 0;
 }
