@@ -220,6 +220,12 @@ static char* test_revert_escape_chars() {
   revert_escape_chars(strD);
   revert_escape_chars(strE);
 
+  printf("Actual, ampersand: \"%s\".   Expected: \"ls&\"\n", strA);
+  printf("Actual, space: \"%s\".   Expected: \"ls \"\n", strB);
+  printf("Actual, backslash: \"%s\".   Expected: \"ls\\\"\n", strC);
+  printf("Actual, tab: \"%s\".   Expected: \"ls\t\"\n", strD);
+  printf("Actual, combo: \"%s\".   Expected: \"ls& \t\"\n", strE);
+  
   mu_assert("ERROR: failed to revert escape char for &\n", strcmp(strA, "ls&") == 0);
   mu_assert("ERROR: failed to revert escape char for space\n", strcmp(strB, "ls ") == 0);
   mu_assert("ERROR: failed to revert escape char for \\\n", strcmp(strC, "ls\\") == 0);
@@ -230,6 +236,7 @@ static char* test_revert_escape_chars() {
   free(strB);
   free(strC);
   free(strD);
+  free(strE);
 
   return 0;
 }

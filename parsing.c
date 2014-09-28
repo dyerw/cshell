@@ -171,25 +171,46 @@ int change_escape_chars(char* str) {
  * replacement function won't know the difference.
  */
 int revert_escape_chars(char* str) {
+  char* tmp = calloc(strlen(str), sizeof(char)); 
+
   int i = 0;
+  int j = 0;
   while(str[i] != '\0') {
     if (str[i] == '\\') {
       if (str[i + 1] == 's') {
-        str[i + 1] = ' ';
+        tmp[j] = ' ';
+        i++;
       }
       else if (str[i + 1] == 'a') {
-        str[i + 1] = '&';
+        tmp[j] = '&';
+        i++;
       }
       else if (str[i + 1] == 'b') {
-        str[i + 1] = '\\';
+        tmp[j] = '\\';
+        i++;
       }
-
+      else if (str[i + 1] == 't') {
+        tmp[j] = '\t';
+        i++;
+      }
       // Return -1 for invalid chars
-      else if (str[i + 1] == '\\' || str[i + 1] == '&' || str[i + 1] == ' ') {
+      else {
         return -1; 
       }
+    } else {
+      tmp[j] = str[i];
     }
+
     i++;
+    j++;
   }
+  j++;
+  tmp[j] = '\0';
+  realloc(tmp, j * sizeof(char));
+  free(str);
+
+  str = calloc(j, sizeof(char));
+  strcpy(str, tmp);
+  free(tmp);
   return 0;
 }
