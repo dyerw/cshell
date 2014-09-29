@@ -8,13 +8,6 @@
  * details.
  */
 
-/* Clean-up TODO:
- * non-arbitrary hostname buffer size
- * non-arbitrary fgets
- * Either remove or fix up interrupt handler stuff
- * fix the dry code
- */
-
 #include "3600sh.h"
 #include "parsing.h"
 
@@ -27,9 +20,7 @@ int main(int argc, char*argv[]) {
   USE(argv);
   setvbuf(stdout, NULL, _IONBF, 0); 
 
-  //TODO fix or delete this
-  //signal(SIGINT, interrupt_handler);
-  char hostname[128]; // Need to choose a non-arbitrary number
+  char hostname[128];
   char dirbuf[PATH_MAX];
   gethostname(hostname, sizeof(hostname));
   getcwd(dirbuf, PATH_MAX);
@@ -110,11 +101,7 @@ void execute(int argc, char* argv[]) {
     argc--;
   }
   
-
-
   // Handle I/O redirection
-  // TODO: break out into a function???
-  // FIXME: This is not DRY at all
   FILE* fd = NULL;
   int new_stdin = -1;
   int new_stderr = -1;
@@ -128,7 +115,6 @@ void execute(int argc, char* argv[]) {
       fd = fopen(argv[i + 1], "r");
       
       // Switch standard in with the file descriptor
-      // dup2(fileno(fd), 0);
       new_stdin = fileno(fd);
 
       // Delete these elements from the arguments array
@@ -198,13 +184,3 @@ void execute(int argc, char* argv[]) {
   if (fd != NULL) { fclose(fd); }
   return;
 }
- 
-/*
-void interrupt_handler(int signum) {
-    pid_t childpid;
-    if (!(childpid == 0)) {
-        printf("  The process has been stopped\n");
-        kill(childpid, SIGINT);
-    }
-}
-*/

@@ -153,22 +153,19 @@ int change_escape_chars(char* str) {
   return 0;
 }
 
-/* 
+/*
  * This function takes a string and mutates it in place such that
- * all occurences of \{space} \& and \\ are replaced with \s 
- * \a and \b. The point of this being that we can then pass this
- * input to our parsing functions and have them exhibit correct
- * behavior for escape chars.
+ * all occurences of changed escape chars (from change_escape_chars)
+ * are reverted into the actual output they should be showing on screen.
+ * The point of this being that we can then convert the commands into
+ * their escaped form before the execution step. 
  *
- * e.g. for the input: cat foo\ bar
- * we would get the args [cat, foo\, bar]
- * but the input: cat foo\sbar
- * would correctly get the args [cat, foo\sbar]
- * which we can then replace with a space once all parsing has occurred.
+ * e.g. for the input: cat foo\sbar
+ * we would get the args [cat, foo bar]
  *
- * However, \a \s and \b are not actually valid escape chars so we need
- * to make sure to throw errors if we encounter them here, since our 
- * replacement function won't know the difference.
+ * However, anything following a \ that is not 'a', '\', '&', or ' ' 
+ * are not actually valid escape sequences so we need
+ * to make sure to throw errors if we encounter them here.
  */
 int revert_escape_chars(char* str) {
   char* tmp = calloc(strlen(str) + 1, sizeof(char)); 

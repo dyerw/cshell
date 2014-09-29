@@ -1,0 +1,37 @@
+cshell
+======
+
+a shell, written for cs3600
+
+CS3600 C 
+==============
+
+* Composition of the program
+  * Parsing.c - this file contains the majority of our string mutation functionality. It here where we have our functions to parse and trim the string, among a few others. It is compiled along with the shell or the unit test, depending on which Make command you type in
+  * Parsing.h - this file is the header for the Parsing.c file
+  * 3600sh.c - this file contains our shell code. It has our main function, as well as our execution, I/0 redirection, and much of our error handling
+  * 3600sh.h - this file contains the header for 3600sh.c
+  * minunit.h - this file is a unit test suite header we found online and were able to make use of in order to test our string manipulation functions
+  * unittests.c - this file contains our unit tests and the test suite functions that we were able to find online
+  * Makefile - to see the different ways to use the make file, see the section below
+* The Make File
+  * To compile the shell, run 'make' or 'make all'
+  * To compile the unit tests, run 'make unittests'
+  * To compile and run the shell, run 'make run'
+  * To compile and run the unit tests on the shell, run 'make utest'
+  * To compile the shell and run the given tests, run 'make test'
+  * To remove any executables, run 'make cleanall'
+  * To compile and run gdb on the unit tests, run 'make debug\_utest'
+  * To compile and run gdb on the shell, run 'make debug\_shell'
+  * To compile and run valgrind on the shell, run 'make valgrind'
+* Compiling Notes
+  * Upon compiling, executables are created in a bin directory within the current directory 
+* What the shell supports
+  * The shell supports commands found in PATH, I/O redirection, and background process
+  * Any number of arguments of any length may be supplied
+  * The escape characters '\ ', '\t', '\\\\', '\&'
+  * To give multiple commands in one line, place an semi-colon after each command. Otherwise, an error will be thrown
+  * Although unadvised, you may place extra spaces through the given command(s). They will simply be removed.
+  * By default, commands will be run in the foreground. In order to change this for a particular command, place an ampersand(&) at the end of the command (before any semi-colons as well
+    * Any input placed after an ampersand that is not preceded by a semi-colon wiht make the shell through an error.
+  * In order to exit the shell, simply type 'exit' or 'quit'  and hit enter
