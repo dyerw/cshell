@@ -188,7 +188,6 @@ static char* test_change_escape_chars() {
   mu_assert("ERROR: failed to change escape char for space\n", strcmp(strB, "ls\\s") == 0);
   mu_assert("ERROR: failed to change escape char for \\\n", strcmp(strC, "ls\\b") == 0);
   mu_assert("ERROR: failed to change escape char for \\t\n", strcmp(strD, "ls\\t") == 0);
-  //mu_assert("ERROR: failed to change escape char for \&\n", strcmp(strE, "ls\\a") == 0);
 
   free(strA);
   free(strB);

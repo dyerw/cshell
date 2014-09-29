@@ -29,6 +29,5 @@
 
 void do_exit();
 void execute(int argc, char* argv[]);
-//void interrupt_handler(int signum);
 
 #endif 
