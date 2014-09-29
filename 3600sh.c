@@ -47,30 +47,44 @@ int main(int argc, char*argv[]) {
     char* input = calloc(200, sizeof(char));
     fgets(input, 200, stdin); 
     
+    int err = 0;
     // Escape all the chars that are going to mess w/ the parsing
     if (change_escape_chars(input) == -1) {
       puts("Error: Unrecognized escape sequence.");
-      break;
+      err = 1;
     }
 
     // Trim the spaces
-    trimstr(input);
+    trimstr(input);    
+
+    // Make sure unescaped & only found at end of string
+    unsigned int k = 0;
+    while (input[k] != '\0') {
+      // If we find an ampersand and it's not the last char
+      if (input[k] == '&' && k != strlen(input) - 1) {
+        puts("Error: Invalid syntax.");
+        err = 1;
+      }
+      k++;
+    }
     
-    // Break out every command into an array
-    char** result = NULL;
-    int* size = calloc(1, sizeof(int));
-    result = splitstr(input, ";", size);
+    if (!err) {
+      // Break out every command into an array
+      char** result = NULL;
+      int* size = calloc(1, sizeof(int));
+      result = splitstr(input, ";", size);
 
-    for (int i = 0; i < *size; i++) {
-      // For each command, split it into arguments
-      int* nargc = calloc(1, sizeof(int));
-      char** nargv = splitstr(result[i], " \t", nargc);
+      for (int i = 0; i < *size; i++) {
+        // For each command, split it into arguments
+        int* nargc = calloc(1, sizeof(int));
+        char** nargv = splitstr(result[i], " \t", nargc);
       
-      // Add a null terminator to the list of args
-      nargv = realloc(nargv, (*nargc + 1) * sizeof(char*));
-      nargv[*nargc] = NULL;
+        // Add a null terminator to the list of args
+        nargv = realloc(nargv, (*nargc + 1) * sizeof(char*));
+        nargv[*nargc] = NULL;
 
-      execute(*nargc, nargv);
+         execute(*nargc, nargv);
+      }
     }
   }
   do_exit();
