@@ -99,7 +99,8 @@ void do_exit() {
  * it to finish and then returns.
  */
 void execute(int argc, char* argv[]) {
-  
+  char* syntax_err = "Error: Invalid syntax.";  
+
   // If the given command is exit, then exit
   if (strcmp(argv[0], "exit") == 0) { do_exit(); }
   if (strcmp(argv[0], "quit") == 0) { do_exit(); } 
@@ -122,11 +123,17 @@ void execute(int argc, char* argv[]) {
   int new_stdout = -1;
   
   for (int i = 0; i < argc; i++) {
-
     // Check for input redirection
     if (strcmp(argv[i], "<") == 0) {
+
+      // If there's no file to redirect, fail
+      if (i == argc - 1 || is_redirect(argv[i + 1])) { puts(syntax_err); return; }
+      // If the following argument after the file isn't < then fail
+      if (i != argc - 2 && (strcmp(argv[i + 2], ">") != 0 && strcmp(argv[i + 2], "2>") != 0)) { puts(syntax_err); return; }
+
       // Open the file following the < symbol
       fd = fopen(argv[i + 1], "r");
+      if (fd == NULL) { puts("Error: Unable to open redirection file."); return; }
       
       // Switch standard in with the file descriptor
       new_stdin = fileno(fd);
@@ -144,8 +151,15 @@ void execute(int argc, char* argv[]) {
     
     // Check for output redirection
     if (strcmp(argv[i], ">") == 0 || strcmp(argv[i], "2>") == 0) {
+
+      if (i == argc - 1 || is_redirect(argv[i + 1])) { puts(syntax_err); return; }
+
+      if (i != argc - 2 && (strcmp(argv[i + 2], "<") != 0 && strcmp(argv[i + 2], "2>") != 0)) { puts(syntax_err); return; }
+
       fd = fopen(argv[i + 1], "w"); 
 
+      if (fd == NULL) { puts("Error: Unable to open redirection file."); return; }
+      
       if (strcmp(argv[i], "2>") == 0) {
         new_stderr = fileno(fd);
       }

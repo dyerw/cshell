@@ -211,3 +211,10 @@ int revert_escape_chars(char* str) {
   free(tmp);
   return 0;
 }
+
+/* 
+ * return 1 if the string is ">", "2>", or "<"
+ */
+int is_redirect(char* str) {
+  return (strcmp(str, ">") == 0 || strcmp("2>", str) == 0 || strcmp("<", str) == 0);
+}
